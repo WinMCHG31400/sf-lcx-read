@@ -10,7 +10,18 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
-
+.container {
+    display: flex; 
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+    background: #f8f9fa;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
 
 .content-wrapper {
     flex: 1;
