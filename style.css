@@ -94,6 +94,29 @@ select {
     margin-right: 10px;
     vertical-align: middle;
 }
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+button {
+    padding: 8px 15px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    flex: 1;
+}
+button:hover {
+    background: #2980b9;
+}
+button:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+}
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
