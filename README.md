@@ -1,9 +1,9 @@
 ![GitHub release](https://badgen.net/github/release/WinMCHG31400/sf-lcx-read)
 ![Star](https://badgen.net/github/stars/WinMCHG31400/sf-lcx-read)
-# 一个让你在线阅读刘慈欣小说的网站
+# 一个可以在线阅读刘慈欣小说的网站
 网址：[sf-lcx.pages.dev](https:\\sf-lcx.pages.dev)
-
-## 目前包含的文章
+### 支持下载
+## 目前包含的小说
 - 长篇
     - 中国2185
     - 超新星纪元（作家出版社版）
@@ -56,3 +56,7 @@
     - 烧火工
     - 岳父与茅台
     - 雷霆战机的故事 
+## 还有一些非小说文章
+- 科幻评论
+- 散文随笔
+- 访谈录
