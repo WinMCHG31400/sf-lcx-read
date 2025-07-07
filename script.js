@@ -48,7 +48,7 @@
         async function readGB18030File(filename) {
             try {
                 fileContent.innerHTML = `<span class="loading"></span>正在加载...`;
-                
+                filename=filename+".txt";
                 const url = CONFIG.CACHE_BUSTING 
                     ? `${filename}?t=${Date.now()}` 
                     : filename;
@@ -60,7 +60,6 @@
                 }
                 
                 const buffer = await response.arrayBuffer();
-                const decoder = new TextDecoder('gb18030');
                 return decoder.decode(buffer);
             } catch (error) {
                 console.error('读取文件失败:', error);
