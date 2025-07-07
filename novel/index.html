@@ -13,6 +13,9 @@
             padding: 20px;
             line-height: 1.6;
             color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         h1 {
@@ -39,6 +42,7 @@
             font-size: 25px;
             margin-left: 10px;
             margin-right: 10px;
+            white-space: nowrap;
         }
         
         a:hover {
@@ -48,6 +52,15 @@
         a {
             text-decoration: none;
             color: #2c3e50;
+        }
+
+        #footer {
+            margin-top: auto;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
     </style>
 </head>
@@ -69,7 +82,8 @@
         <a href="SEP/" class="a2">超新星纪元（作家出版社）</a>
         </div>
     </div>
-
+    <div id="footer">
+        <p><a href="/">刘慈欣小说集</a> | <a href="https://github.com/WinMCHG31400/sf-lcx-read" target="_blank">Github</a></p>
+    </div>
 </body>
-
 </html>

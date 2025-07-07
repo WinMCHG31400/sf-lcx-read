@@ -12,7 +12,11 @@
             padding: 20px;
             line-height: 1.6;
             color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
+
         h1 {
             text-align: center;
             margin-bottom: 30px;
@@ -81,11 +85,19 @@
             text-decoration: none;
             color: #2c3e50;
         }
+        #footer {
+            margin-top: auto;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
-    <h1><a href="/BLF/">刘慈欣小说集</a>><a href="../">长篇小说</a>>超新星纪元（完整版）</h1>
+    <h1><a href="/">刘慈欣小说集</a>><a href="../">长篇小说</a>>超新星纪元（完整版）</h1>
 
     
     <div class="control-panel">
@@ -98,6 +110,9 @@
     
     <div id="fileContent" class="status">请从下拉列表中选择一个章节</div>
 
+    <div id="footer">
+        <p><a href="/">刘慈欣小说集</a> | <a href="https://github.com/WinMCHG31400/sf-lcx-read" target="_blank">Github</a></p>
+    </div>
     <script>
         // 配置
         const CONFIG = {
