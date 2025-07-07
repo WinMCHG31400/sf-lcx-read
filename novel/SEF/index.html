@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,29 +9,30 @@
 </head>
 
 <body>
-    <h1><a href="/">刘慈欣小说集</a>><a href="../">长篇小说</a>>超新星纪元（完整版）</h1>
-
-    
-    <div class="control-panel">
-        <h3>选择章节：</h3>
-        <select id="fileSelector" disabled>
-            <option value="">-- 正在加载文件列表... --</option>
-        </select>
-        <div class="file-info">
-            <span id="fileInfo"></span>
-            <span id="filePosition"></span>
+    <div class="content-wrapper">
+        <h1><a href="/">刘慈欣小说集</a>><a href="../">长篇小说</a>>超新星纪元（完整版）</h1>
+        <div class="control-panel">
+            <h3>选择章节：</h3>
+            <select id="fileSelector" disabled>
+                <option value="">-- 正在加载文件列表... --</option>
+            </select>
+            <div class="file-info">
+                <span id="fileInfo"></span>
+                <span id="filePosition"></span>
+            </div>
         </div>
-    </div>
-    
-    <div id="fileContent" class="status">请从下拉列表中选择一个章节</div>
 
-    <div class="nav-buttons">
-        <button id="prevBtn" disabled>上一个</button>
-        <button id="nextBtn" disabled>下一个</button>
+        <div id="fileContent" class="status">请从下拉列表中选择一个章节</div>
+
+        <div class="nav-buttons">
+            <button id="prevBtn" disabled>上一个</button>
+            <button id="nextBtn" disabled>下一个</button>
+        </div>
     </div>
     <div id="footer">
         <p><a href="/">刘慈欣小说集</a> | <a href="https://github.com/WinMCHG31400/sf-lcx-read" target="_blank">Github</a></p>
     </div>
     <script src="/script.js"></script>
 </body>
+
 </html>

@@ -12,6 +12,14 @@ body {
 }
 
 
+.content-wrapper {
+    flex: 1;
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
 h1 {
     text-align: center;
     margin-bottom: 30px;
@@ -38,7 +46,7 @@ a {
     background: #f8f9fa;
     padding: 5px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 .control-panel {
