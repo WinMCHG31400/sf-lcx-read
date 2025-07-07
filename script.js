@@ -90,6 +90,10 @@
                 // 更新按钮状态
                 prevBtn.disabled = currentIndex <= 0;
                 nextBtn.disabled = currentIndex >= fileList.length - 1;
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth' // 平滑滚动
+                });
                 
             } catch (error) {
                 showError(error.message);
