@@ -67,7 +67,6 @@ a {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     margin-bottom: 20px;
 }
-
 select {
     width: 100%;
     padding: 10px;
@@ -133,6 +132,16 @@ button:hover {
     background: #2980b9;
 }
 button:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+}
+#downloadBtn {
+    background: #27ae60;
+}
+#downloadBtn:hover {
+    background: #219653;
+}
+#downloadBtn:disabled {
     background: #bdc3c7;
     cursor: not-allowed;
 }

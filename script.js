@@ -8,6 +8,7 @@
         // 全局变量
         let fileList = [];
         let currentIndex = -1;
+        let currentFileContent = '';
 
         // DOM元素
         const fileSelector = document.getElementById('fileSelector');
@@ -16,6 +17,7 @@
         const filePosition = document.getElementById('filePosition');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
 
         // 获取文件清单
         async function fetchFileList() {
@@ -47,8 +49,7 @@
         // 读取GB18030编码文件
         async function readGB18030File(filename) {
             try {
-                fileContent.innerHTML = `<span class="loading"></span>正在加载...`;
-                
+                fileContent.innerHTML = `<span class="loading"></span>正在加载文件...`;
                 filename=filename+".txt";
                 const url = CONFIG.CACHE_BUSTING 
                     ? `${filename}?t=${Date.now()}` 
@@ -69,6 +70,27 @@
             }
         }
 
+        // 下载当前文件
+        function downloadCurrentFile() {
+            if (currentIndex === -1 || !currentFileContent) return;
+            
+            const filename = fileList[currentIndex];
+            const blob = new Blob([currentFileContent], { type: 'text/plain;' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            
+            // 清理
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+        }
+
         // 加载并显示文件
         async function loadFile(index) {
             if (index < 0 || index >= fileList.length) return;
@@ -78,10 +100,11 @@
             
             try {
                 const content = await readGB18030File(filename);
+                currentFileContent = content; // 保存当前文件内容
                 fileContent.textContent = content;
                 
                 // 更新文件信息
-                fileInfo.textContent = `当前位置: ${filename}`;
+                fileInfo.textContent = `当前文件: ${filename}`;
                 filePosition.textContent = `${currentIndex + 1}/${fileList.length}`;
                 
                 // 更新选择器
@@ -90,13 +113,17 @@
                 // 更新按钮状态
                 prevBtn.disabled = currentIndex <= 0;
                 nextBtn.disabled = currentIndex >= fileList.length - 1;
+                downloadBtn.disabled = false;
+                
+                // 滚动到页面顶部
                 window.scrollTo({
                     top: 0,
-                    behavior: 'smooth' // 平滑滚动
+                    behavior: 'smooth'
                 });
                 
             } catch (error) {
                 showError(error.message);
+                downloadBtn.disabled = true;
             }
         }
 
@@ -113,7 +140,7 @@
             
             if (fileList.length === 0) {
                 fileSelector.innerHTML = '<option value="">-- 没有可用的文件 --</option>';
-                showError('文件清单中没有可用的文本文件');
+                showError('文件清单中没有可用的文件');
                 return;
             }
             
@@ -137,6 +164,7 @@
                     currentIndex = -1;
                     prevBtn.disabled = true;
                     nextBtn.disabled = true;
+                    downloadBtn.disabled = true;
                     return;
                 }
                 
@@ -148,6 +176,9 @@
             prevBtn.addEventListener('click', () => {
                 if (currentIndex > 0) loadFile(currentIndex - 1);
             });
+            
+            // 下载按钮事件
+            downloadBtn.addEventListener('click', downloadCurrentFile);
             
             // 下一个按钮事件
             nextBtn.addEventListener('click', () => {
