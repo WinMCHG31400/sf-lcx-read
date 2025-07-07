@@ -1,0 +1,128 @@
+// 配置
+const CONFIG = {
+    MANIFEST_FILE: 'file-list.json',  // 文件清单JSON路径
+    CACHE_BUSTING: true              // 是否添加缓存清除参数
+};
+
+// 获取文件清单
+async function fetchFileList() {
+    try {
+        const url = CONFIG.CACHE_BUSTING 
+            ? `${CONFIG.MANIFEST_FILE}?t=${Date.now()}` 
+            : CONFIG.MANIFEST_FILE;
+        
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`获取文件列表失败 (HTTP ${response.status})`);
+        }
+        
+        const data = await response.json();
+        
+        if (!data.files || !Array.isArray(data.files)) {
+            throw new Error('无效的文件列表格式');
+        }
+        
+        return data.files;
+    } catch (error) {
+        console.error('加载文件列表失败:', error);
+        showError('加载文件列表失败: ' + error.message);
+        return [];
+    }
+}
+
+// 读取文件
+async function readGB18030File(filename) {
+    try {
+        filename=filename+".txt";
+        const display = document.getElementById('fileContent');
+        display.innerHTML = `<span class="loading"></span>正在加载文件...`;
+        
+        const url = CONFIG.CACHE_BUSTING 
+            ? `${filename}?t=${Date.now()}` 
+            : filename;
+        
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`文件加载失败 (HTTP ${response.status})`);
+        }
+        
+        const buffer = await response.arrayBuffer();
+        const decoder = new TextDecoder();
+        const content = decoder.decode(buffer);
+        
+        // 更新文件信息
+        document.getElementById('fileInfo').textContent =`大小: ${formatFileSize(buffer.byteLength)}`;
+        
+        return content;
+    } catch (error) {
+        console.error('读取文件失败:', error);
+        throw new Error(`无法读取文件: ${error.message}`);
+    }
+}
+
+// 格式化文件大小
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i]);
+}
+
+// 显示错误信息
+function showError(message) {
+    const display = document.getElementById('fileContent');
+    display.innerHTML = `<div class="error">${message}</div>`;
+}
+
+// 初始化文件选择器
+async function initFileSelector() {
+    const selector = document.getElementById('fileSelector');
+    
+    try {
+        const files = await fetchFileList();
+        
+        if (files.length === 0) {
+            selector.innerHTML = '<option value="">-- 没有可用的文件 --</option>';
+            showError('文件列表中没有可用的文件');
+            return;
+        }
+        
+        selector.innerHTML = '<option value="">-- 请选择篇目 --</option>';
+        
+        files.forEach(file => {
+            const option = document.createElement('option');
+            option.value = file;
+            option.textContent = file;
+            selector.appendChild(option);
+        });
+        
+        selector.disabled = false;
+        
+        // 监听选择变化
+        selector.addEventListener('change', async (e) => {
+            if (!e.target.value) {
+                document.getElementById('fileContent').textContent = '请选择一个篇目';
+                document.getElementById('fileInfo').textContent = '';
+                return;
+            }
+            
+            try {
+                const content = await readGB18030File(e.target.value);
+                document.getElementById('fileContent').textContent = content;
+            } catch (error) {
+                showError(error.message);
+            }
+        });
+        
+    } catch (error) {
+        console.error('初始化失败:', error);
+        selector.innerHTML = '<option value="">-- 初始化失败 --</option>';
+        showError('初始化失败: ' + error.message);
+    }
+}
+
+// 页面加载完成后初始化
+window.addEventListener('DOMContentLoaded', initFileSelector);
