@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三体</title>
+    <style>
+        body {
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        .control-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            background: white;
+        }
+        #fileContent {
+            white-space: pre-wrap;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            min-height: 300px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        .status {
+            color: #1f1f1f;
+            padding: 20px;
+        }
+        .error {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .file-info {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #7f8c8d;
+            text-align: right;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            border-top-color: #3498db;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        a:hover {
+            color: #5b5a5a
+        }
+
+        a {
+            text-decoration: none;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+
+<body>
+    <h1><a href="/BLF/">刘慈欣小说集</a>><a href="../">长篇小说</a>>三体</h1>
+
+    
+    <div class="control-panel">
+        <h3>选择章节：</h3>
+        <select id="fileSelector" disabled>
+            <option value="">-- 正在加载文件列表... --</option>
+        </select>
+        <div class="file-info" id="fileInfo"></div>
+    </div>
+    
+    <div id="fileContent" class="status">请从下拉列表中选择一个章节</div>
+
+    <script>
+        // 配置
+        const CONFIG = {
+            MANIFEST_FILE: 'file-list.json',  // 文件清单JSON路径
+            CACHE_BUSTING: true              // 是否添加缓存清除参数
+        };
+
+        // 获取文件清单
+        async function fetchFileList() {
+            try {
+                const url = CONFIG.CACHE_BUSTING 
+                    ? `${CONFIG.MANIFEST_FILE}?t=${Date.now()}` 
+                    : CONFIG.MANIFEST_FILE;
+                
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`获取文件列表失败 (HTTP ${response.status})`);
+                }
+                
+                const data = await response.json();
+                
+                if (!data.files || !Array.isArray(data.files)) {
+                    throw new Error('无效的文件列表格式');
+                }
+                
+                return data.files;
+            } catch (error) {
+                console.error('加载文件列表失败:', error);
+                showError('加载文件列表失败: ' + error.message);
+                return [];
+            }
+        }
+
+        // 读取文件
+        async function readGB18030File(filename) {
+            try {
+                filename=filename+".txt";
+                const display = document.getElementById('fileContent');
+                display.innerHTML = `<span class="loading"></span>正在加载文件...`;
+                
+                const url = CONFIG.CACHE_BUSTING 
+                    ? `${filename}?t=${Date.now()}` 
+                    : filename;
+                
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`文件加载失败 (HTTP ${response.status})`);
+                }
+                
+                const buffer = await response.arrayBuffer();
+                const decoder = new TextDecoder();
+                const content = decoder.decode(buffer);
+                
+                // 更新文件信息
+                document.getElementById('fileInfo').textContent =`大小: ${formatFileSize(buffer.byteLength)}`;
+                
+                return content;
+            } catch (error) {
+                console.error('读取文件失败:', error);
+                throw new Error(`无法读取文件: ${error.message}`);
+            }
+        }
+
+        // 格式化文件大小
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i]);
+        }
+
+        // 显示错误信息
+        function showError(message) {
+            const display = document.getElementById('fileContent');
+            display.innerHTML = `<div class="error">${message}</div>`;
+        }
+
+        // 初始化文件选择器
+        async function initFileSelector() {
+            const selector = document.getElementById('fileSelector');
+            
+            try {
+                const files = await fetchFileList();
+                
+                if (files.length === 0) {
+                    selector.innerHTML = '<option value="">-- 没有可用的文件 --</option>';
+                    showError('文件列表中没有可用的文件');
+                    return;
+                }
+                
+                selector.innerHTML = '<option value="">-- 请选择章节 --</option>';
+                
+                files.forEach(file => {
+                    const option = document.createElement('option');
+                    option.value = file;
+                    option.textContent = file;
+                    selector.appendChild(option);
+                });
+                
+                selector.disabled = false;
+                
+                // 监听选择变化
+                selector.addEventListener('change', async (e) => {
+                    if (!e.target.value) {
+                        document.getElementById('fileContent').textContent = '请选择一个章节';
+                        document.getElementById('fileInfo').textContent = '';
+                        return;
+                    }
+                    
+                    try {
+                        const content = await readGB18030File(e.target.value);
+                        document.getElementById('fileContent').textContent = content;
+                    } catch (error) {
+                        showError(error.message);
+                    }
+                });
+                
+            } catch (error) {
+                console.error('初始化失败:', error);
+                selector.innerHTML = '<option value="">-- 初始化失败 --</option>';
+                showError('初始化失败: ' + error.message);
+            }
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', initFileSelector);
+    </script>
+</body>
+</html>
