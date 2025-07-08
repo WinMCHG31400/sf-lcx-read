@@ -220,7 +220,6 @@ async function initFileSelector() {
             // 自动加载请求的文件
             fileSelector.value = requestedFile;
             showError(index)
-            loadFile(index);
         }
         else
             window.location.href = window.location.pathname;
@@ -242,7 +241,7 @@ async function initFileSelector() {
         const index = fileList.indexOf(e.target.value);
         if (index !== -1) {
             window.location.href = window.location.pathname + "?p=" + e.target.value;
-            loadFile(index);
+            //loadFile(index);
         }
     });
 
@@ -265,10 +264,10 @@ async function initFileSelector() {
 
         if (e.key === 'ArrowLeft' && !prevBtn.disabled) {
             window.location.href = window.location.pathname + "?p=" + fileList[currentIndex - 1];
-            loadFile(currentIndex - 1);
+            //loadFile(currentIndex - 1);
         } else if (e.key === 'ArrowRight' && !nextBtn.disabled) {
             window.location.href = window.location.pathname + "?p=" + fileList[currentIndex + 1];
-            loadFile(currentIndex + 1);
+           // loadFile(currentIndex + 1);
         }
     });
 }
