@@ -105,13 +105,14 @@ async function loadFile(index) {
         prevBtn.disabled = currentIndex <= 0;
         nextBtn.disabled = currentIndex >= fileList.length - 1;
         downloadBtn.disabled = false;
+        shareBtn.display = false; 
 
         // 更新文件信息
         filePosition.textContent = ` | 位置：${currentIndex + 1}/${fileList.length}`;
 
         const contentStart = document.getElementById('fileContent').offsetTop;
         window.scrollTo({
-            top: contentStart - 20, 
+            top: contentStart - 20,
             behavior: 'smooth'
         });
 
@@ -120,12 +121,59 @@ async function loadFile(index) {
         downloadBtn.disabled = true;
     }
 }
+function setupShareButton() {
+    shareBtn.addEventListener('click', async () => {
+        if (currentIndex === -1) return;
+        
+        const filename = fileList[currentIndex].replace('.txt', '');
+        const shareUrl = `${window.location.origin}${window.location.pathname}?p=${filename}`;
+        const title = `分享: ${filename}`;
+        
+        // 检测是否为移动设备
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        if (isMobile && navigator.share) {
+            // 移动设备调用系统分享
+            try {
+                await navigator.share({
+                    title: title,
+                    text: '分享这篇文章给您',
+                    url: shareUrl
+                });
+            } catch (err) {
+                console.log('分享取消:', err);
+                // 分享失败时转为复制链接
+                copyToClipboard(shareUrl);
+            }
+        } else {
+            // 桌面设备复制链接
+            copyToClipboard(shareUrl);
+        }
+    });
+}
+
+// 复制到剪贴板函数
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        alert('链接已复制到剪贴板: ' + text);
+    }).catch(err => {
+        console.error('复制失败:', err);
+        // 兼容旧浏览器
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('链接已复制: ' + text);
+    });
+}
 function formatFileSize(bytes) {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2) + ' ' )+ sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2) + ' ') + sizes[i];
 }
 // 显示错误信息
 function showError(message) {
@@ -133,14 +181,21 @@ function showError(message) {
     fileInfo.textContent = '';
     filePosition.textContent = '';
 }
+function getFilenameFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const fileParam = params.get('p');
 
+    if (!fileParam) return null;
+
+    return fileParam;
+}
 // 初始化文件选择器
 async function initFileSelector() {
     fileList = await fetchFileList();
 
     if (fileList.length === 0) {
         fileSelector.innerHTML = '<option value="">-- 没有可用的文件 --</option>';
-        showError('文件清单中没有可用的文件');
+        showError('清单中没有可用的文件');
         return;
     }
 
@@ -155,6 +210,22 @@ async function initFileSelector() {
 
     fileSelector.disabled = false;
 
+    // 获取URL参数
+    const requestedFile = getFilenameFromUrl();
+    if (requestedFile) {
+        // 检查文件是否存在列表中
+        const index = fileList.indexOf(requestedFile);
+
+        if (index !== -1) {
+            // 自动加载请求的文件
+            fileSelector.value = requestedFile;
+            showError(index)
+            loadFile(index);
+        }
+        else
+            window.location.href = window.location.pathname;
+    }
+
     // 监听选择变化
     fileSelector.addEventListener('change', (e) => {
         if (!e.target.value) {
@@ -165,11 +236,14 @@ async function initFileSelector() {
             prevBtn.disabled = true;
             nextBtn.disabled = true;
             downloadBtn.disabled = true;
+            window.location.href = window.location.pathname
             return;
         }
-
         const index = fileList.indexOf(e.target.value);
-        if (index !== -1) loadFile(index);
+        if (index !== -1) {
+            window.location.href = window.location.pathname + "?p=" + e.target.value;
+            loadFile(index);
+        }
     });
 
     // 上一个按钮事件
@@ -219,11 +293,15 @@ function toggleScrollTopButton() {
 // 页面加载完成后初始化
 window.addEventListener('DOMContentLoaded', () => {
     initFileSelector();
+
+    setupShareButton();
+    // 检查请求的文件是否在清单中
+    if (!requestedFile || !fileList.includes(requestedFile))
+        fileSelector.value = requestedFile;
     scrollTopBtn.addEventListener('click', () => {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         })
     });
-    screen.addEventListener('sc')
 });
