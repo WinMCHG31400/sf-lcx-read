@@ -295,9 +295,6 @@ window.addEventListener('DOMContentLoaded', () => {
     initFileSelector();
 
     setupShareButton();
-    // 检查请求的文件是否在清单中
-    if (!requestedFile || !fileList.includes(requestedFile))
-        fileSelector.value = requestedFile;
     scrollTopBtn.addEventListener('click', () => {
         window.scrollTo({
             top: 0,

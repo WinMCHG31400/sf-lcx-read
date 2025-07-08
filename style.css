@@ -174,7 +174,7 @@ button:disabled {
     font-size: 15px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    display: block;
+    display: none;
 }
 #shareBtn:hover {
     background: #7b1fa2;
