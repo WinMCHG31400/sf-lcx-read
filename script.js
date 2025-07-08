@@ -42,7 +42,7 @@ async function fetchFileList() {
     }
 }
 
-async function readGB18030File(filename) {
+async function readFile(filename) {
     try {
         fileContent.innerHTML = `<span class="loading"></span>正在加载文件...`;
         filename = filename + ".txt";
@@ -57,6 +57,7 @@ async function readGB18030File(filename) {
         }
 
         const buffer = await response.arrayBuffer();
+        fileInfo.textContent = `大小: ${formatFileSize(buffer.byteLength)}`;
         const decoder = new TextDecoder();
         return decoder.decode(buffer);
     } catch (error) {
@@ -93,13 +94,9 @@ async function loadFile(index) {
     const filename = fileList[currentIndex];
 
     try {
-        const content = await readGB18030File(filename);
+        const content = await readFile(filename);
         currentFileContent = content; // 保存当前文件内容
-        fileContent.textContent = content;
-
-        // 更新文件信息
-        fileInfo.textContent = `当前文件: ${filename}`;
-        filePosition.textContent = `${currentIndex + 1}/${fileList.length}`;
+        fileContent.innerHTML = content;
 
         // 更新选择器
         fileSelector.value = filename;
@@ -108,6 +105,9 @@ async function loadFile(index) {
         prevBtn.disabled = currentIndex <= 0;
         nextBtn.disabled = currentIndex >= fileList.length - 1;
         downloadBtn.disabled = false;
+
+        // 更新文件信息
+        filePosition.textContent = ` | 位置：${currentIndex + 1}/${fileList.length}`;
 
         const contentStart = document.getElementById('fileContent').offsetTop;
         window.scrollTo({
@@ -120,7 +120,13 @@ async function loadFile(index) {
         downloadBtn.disabled = true;
     }
 }
-
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2) + ' ' )+ sizes[i];
+}
 // 显示错误信息
 function showError(message) {
     fileContent.innerHTML = `<div class="error">${message}</div>`;

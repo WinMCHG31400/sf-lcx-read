@@ -12,7 +12,7 @@
 
 　　一面二十多米高的巨型屏幕上出现了如下显示，显示的内容只有戴着同步眼镜的最高执政官才能看到。
 
-　　中华人民共和国信息体ZZG931密级：AAA
+<div style="background: #eaeaea;">　　中华人民共和国信息体ZZG931密级：AAA
 
 　　软件BRAIN1，BRAIN2，BRAIN3，BRAIN4，BRAIN5，BRAIN6
 
@@ -38,9 +38,9 @@
 
 　　以上人员详细情况请参看B001数椐库。
 
-　　（如阅读完按任一键以继续……）
+　　（如阅读完按任一键以继续……）</div>
 
-　　中华人民共和国信息体ZZG932密级：AAA
+<div style="background: #eaeaea;">　　中华人民共和国信息体ZZG932密级：AAA
 
 　　对BRAIN1，BRAIN2，BRAIN3，BRAIN4，BRAIN5，BRAIN6软件的鉴定方式和鉴定程序。
 
@@ -52,9 +52,9 @@
 
 　　三、法律小组在其它四个小组全部完成一，二阶段的工作后，进入工作，此阶段工作按第三类鉴定提纲进行。
 
-　　（阅读完后打任一键以继续……）
+　　（阅读完后打任一键以继续……）</div>
 
-　　中华人民共和国信息体ZZG933密级：AAA
+<div style="background: #eaeaea;">　　中华人民共和国信息体ZZG933密级：AAA
 
 　　软件BRAIN1，BRAIN2，BRAIN3，BRAIN4，BRAIN5，BRAIN6鉴定提纲
 
@@ -76,11 +76,11 @@
 
 　　第三类：在第一二阶段鉴定结果的基础上，给出六个客体的法律意义和社会伦理学意义。
 
-　　（阅读完后打任一键以继续……）
+　　（阅读完后打任一键以继续……）</div>
 
-　　中华人民共和国信息体ZZG934密级AA
+<div style="background: #eaeaea;">　　中华人民共和国信息体ZZG934密级AA
 
-　　中华人民共和国执政委员会最高执政官令：对软件BRAIN1，BRAIN2，BRAIN3，BRAIN4，BRAIN5，BRAIN6的鉴定结果定为AAA机密。
+　　中华人民共和国执政委员会最高执政官令：对软件BRAIN1，BRAIN2，BRAIN3，BRAIN4，BRAIN5，BRAIN6的鉴定结果定为AAA机密。</div>
 
 　　五个巨型屏幕同时亮了，显示出五个小组所在的五个电脑室的情景。每个电脑室中，刚刚到达的科学家们聚成几小堆交谈着，很快他们都转过来看着最高执政官。
 

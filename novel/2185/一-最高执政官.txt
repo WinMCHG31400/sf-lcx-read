@@ -69,7 +69,7 @@
 
 　　“今后我会用行动说明的。谢谢。”
 
-　　“I am the reporter of <Times>，what is the greatest achievement you had won before you was selected？（我是《时代周刊》记者，您当选前取得的最大成就是什么？）”
+　　“I am the reporter of <i>Times</i>，what is the greatest achievement you had won before you was selected？（我是《时代周刊》记者，您当选前取得的最大成就是什么？）”
 
 　　“I have overthrown a saying of Aristotle：'The fascination and the right can't gather on a woman'（我推翻了亚里士多德的一句话：'魅力和权力不可能在同一个女人身上出现'。为适合自己的需要最高执政官篡改了原话，Prettiness（美貌）改为fascination（魅力），wisdom（智慧）改为right（权力））”
 
