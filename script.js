@@ -219,7 +219,7 @@ async function initFileSelector() {
         if (index !== -1) {
             // 自动加载请求的文件
             fileSelector.value = requestedFile;
-            showError(index)
+            loadFile(index)
         }
         else
             window.location.href = window.location.pathname;
