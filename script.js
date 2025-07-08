@@ -264,8 +264,10 @@ async function initFileSelector() {
         if (currentIndex === -1) return;
 
         if (e.key === 'ArrowLeft' && !prevBtn.disabled) {
+            window.location.href = window.location.pathname + "?p=" + fileList[currentIndex - 1];
             loadFile(currentIndex - 1);
         } else if (e.key === 'ArrowRight' && !nextBtn.disabled) {
+            window.location.href = window.location.pathname + "?p=" + fileList[currentIndex + 1];
             loadFile(currentIndex + 1);
         }
     });
