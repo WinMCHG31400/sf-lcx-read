@@ -137,7 +137,7 @@ function setupShareButton() {
             try {
                 await navigator.share({
                     title: title,
-                    text: '分享这篇文章给您',
+                    text: fileList[currentIndex],
                     url: shareUrl
                 });
             } catch (err) {
