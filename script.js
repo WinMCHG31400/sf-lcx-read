@@ -247,7 +247,7 @@ async function initFileSelector() {
 
     // 上一个按钮事件
     prevBtn.addEventListener('click', () => {
-        if (currentIndex > 0) loadFile(currentIndex - 1);
+        if (currentIndex > 0) window.location.href = window.location.pathname + "?p=" + fileList[currentIndex - 1];
     });
 
     // 下载按钮事件
@@ -255,7 +255,7 @@ async function initFileSelector() {
 
     // 下一个按钮事件
     nextBtn.addEventListener('click', () => {
-        if (currentIndex < fileList.length - 1) loadFile(currentIndex + 1);
+        if (currentIndex < fileList.length - 1) window.location.href = window.location.pathname + "?p=" + fileList[currentIndex + 1];
     });
 
     // 键盘快捷键
