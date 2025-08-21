@@ -290,11 +290,9 @@ function toggleScrollTopButton() {
         scrollTopBtn.style.display = 'none';
 }
 
-
 // 页面加载完成后初始化
 window.addEventListener('DOMContentLoaded', () => {
     initFileSelector();
-
     setupShareButton();
     scrollTopBtn.addEventListener('click', () => {
         window.scrollTo({

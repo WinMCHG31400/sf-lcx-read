@@ -37,7 +37,7 @@
 
 　　接下来，最高执政官的首席科学顾问开始宣布B委员会对六个软件的鉴定结果。在科学顾问详细地介绍了鉴定程序和鉴定提纲后，从一号抗震基地中经过390名科学家和工程师六天的工作得到的鉴定结果，在会议室的一个大屏幕上开始显示了。
 
-<div style="background: #eaeaea;">　　中华人民共和国信息体B0001密级：AAA
+<div style="background: var(--border-color);">　　中华人民共和国信息体B0001密级：AAA
 
 　　对软件BRAIN1，BRAIN2，BRAIN3，BRAIN4，BRAIN5，BRAIN6
 

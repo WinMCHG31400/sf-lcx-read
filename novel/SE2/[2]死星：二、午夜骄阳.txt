@@ -35,7 +35,7 @@
 
 　　以下是死星出现后俄罗斯顿河号空间站同在哥萨克共和国的拜克努尔航天中心，以及美国宙斯号航天飞机的通讯记录：
 
-<div style="background: #eaeaea;">　　发射后累计小时数：7315
+<div style="background: var(--border-color);">　　发射后累计小时数：7315
 
 　　轨道高度：9500公里
 

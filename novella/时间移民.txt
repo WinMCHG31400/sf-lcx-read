@@ -5,7 +5,7 @@
 
 　　<h2>移民</h2>
 
-　　<div style="background: #eaeaea;">告全民书：
+　　<div style="background: var(--border-color);">告全民书：
 
 　　迫于环境和人口无法承受的压力，政府决定进行时间移民，首批移民人数为8000万，移民距离为120年。</div>
 

@@ -1,3 +1,50 @@
+:root {
+    /* 浅色模式变量 */
+    --bg-color: #ffffff;
+    --text-color: #333;
+    --container-bg: #f8f9fa;
+    --content-bg: #ffffff;
+    --border-color: #e0e0e0;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --button-bg: #3498db;
+    --button-hover: #2980b9;
+    --download-btn: #27ae60;
+    --download-hover: #219653;
+    --disabled-btn: #bdc3c7;
+    --scroll-btn: #3498db;
+    --share-btn: #9c27b0;
+    --share-hover: #7b1fa2;
+    --theme-btn: #d0d0d0;
+    --theme-hover: #b6b6b6;
+    --link-color: #2c3e50;
+    --link-hover: #7b7979;
+    --file-info: #7f8c8d;
+    --error-color: #e74c3c;
+}
+
+[data-theme="dark"] {
+    /* 深色模式变量 */
+    --bg-color: #1a1a1a;
+    --text-color: #e6e6e6;
+    --container-bg: #2d2d2d;
+    --content-bg: #2d2d2d;
+    --border-color: #444444;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+    --button-bg: #3d3d3d;
+    --button-hover: #4d4d4d;
+    --download-btn: #2e7d52;
+    --download-hover: #3d8c61;
+    --disabled-btn: #555555;
+    --scroll-btn: #3d3d3d;
+    --share-btn: #7b1fa2;
+    --share-hover: #8e24aa;
+    --theme-btn: #8f6a30;
+    --theme-hover: #8f8230;
+    --link-color: #cccccc;
+    --link-hover: #ffffff;
+    --file-info: #a0a0a0;
+    --error-color: #ff6b6b;
+}
 
 body {
     font-family: Arial, "Microsoft YaHei", sans-serif;
@@ -5,23 +52,27 @@ body {
     margin: 0 auto;
     padding: 20px;
     line-height: 1.6;
-    color: #333;
+    color: var(--text-color);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-color: var(--bg-color);
+    transition: background-color 0.3s, color 0.3s;
 }
+
 .container {
     display: flex; 
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 20px;
-    background: #f8f9fa;
+    background: var(--container-bg);
     justify-content: center;
     padding: 10px;
     border-radius: 8px;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -2px 4px var(--shadow-color);
     text-align: center;
-  }
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
 
 .content-wrapper {
     flex: 1;
@@ -31,18 +82,18 @@ body {
     width: 100%;
     box-sizing: border-box;
 }
+
 h1 {
     text-align: center;
     margin-bottom: 30px;
-    color: #2c3e50;
+    color: var(--text-color);
 }
 
 a:hover {
-    color: #7b7979
+    color: var(--link-hover);
 }
 
-.a1{
-    
+.a1 {
     font-size: 25px;
     margin-left: 10px;
     margin-right: 10px;
@@ -50,67 +101,85 @@ a:hover {
 
 a {
     text-decoration: none;
-    color: #2c3e50;
+    color: var(--link-color);
+    transition: color 0.3s;
 }
+
 #footer {
     margin-top: 20px;
-    background: #f8f9fa;
+    background: var(--container-bg);
     padding: 5px;
     border-radius: 8px;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -2px 4px var(--shadow-color);
     text-align: center;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
+
 .control-panel {
-    background: #f8f9fa;
+    background: var(--container-bg);
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px var(--shadow-color);
     margin-bottom: 20px;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
+
 select {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     font-size: 16px;
     margin-bottom: 10px;
-    background: white;
+    background: var(--content-bg);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
+
 #fileContent {
     white-space: pre-wrap;
-    background: white;
+    background: var(--content-bg);
     padding: 20px;
     border-radius: 8px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-color);
     min-height: 300px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px var(--shadow-color);
     font-size: 15px;
     line-height: 1.8;
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
+
 .status {
-    color: #1f1f1f;
+    color: var(--text-color);
     padding: 20px;
+    transition: color 0.3s;
 }
+
 .error {
-    color: #e74c3c;
+    color: var(--error-color);
     font-weight: bold;
 }
+
 .file-info {
     margin-top: 15px;
     font-size: 14px;
-    color: #7f8c8d;
+    color: var(--file-info);
     text-align: right;
+    transition: color 0.3s;
 }
+
 .loading {
     display: inline-block;
     width: 20px;
     height: 20px;
     border: 3px solid rgba(0,0,0,0.1);
     border-radius: 50%;
-    border-top-color: #3498db;
+    border-top-color: var(--button-bg);
     animation: spin 1s ease-in-out infinite;
     margin-right: 10px;
     vertical-align: middle;
+    transition: border-top-color 0.3s;
 }
 
 .nav-buttons {
@@ -118,33 +187,41 @@ select {
     gap: 10px;
     margin-top: 15px;
 }
+
 button {
     padding: 8px 15px;
-    background: #3498db;
+    background: var(--button-bg);
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
     flex: 1;
+    transition: background-color 0.3s;
 }
+
 button:hover {
-    background: #2980b9;
+    background: var(--button-hover);
 }
+
 button:disabled {
-    background: #bdc3c7;
+    background: var(--disabled-btn);
     cursor: not-allowed;
 }
+
 #downloadBtn {
-    background: #27ae60;
+    background: var(--download-btn);
 }
+
 #downloadBtn:hover {
-    background: #219653;
+    background: var(--download-hover);
 }
+
 #downloadBtn:disabled {
-    background: #bdc3c7;
+    background: var(--disabled-btn);
     cursor: not-allowed;
 }
+
 #scrollTopBtn {
     padding: 0px;
     text-align: center;
@@ -153,14 +230,16 @@ button:disabled {
     right: 10px;
     width: 40px;
     height: 40px;
-    background: #3498db;
+    background: var(--scroll-btn);
     color: white;
     border: none;
     font-size: 30px;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px var(--shadow-color);
     display: none;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
+
 #shareBtn {
     padding: 0px;
     text-align: center;
@@ -169,18 +248,45 @@ button:disabled {
     right: 10px;
     width: 40px;
     height: 40px;
-    background: #9c27b0;
+    background: var(--share-btn);
     border: none;
     font-size: 15px;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px var(--shadow-color);
     display: none;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
+
 #shareBtn:hover {
-    background: #7b1fa2;
+    background: var(--share-hover);
 }
+
 #shareBtn:disabled {
-    background: #bdc3c7;
+    background: var(--disabled-btn);
+    cursor: not-allowed;
+}
+#themeBtn{
+    padding: 0px;
+    text-align: center;
+    position: fixed;
+    bottom: 110px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background: var(--button-bg);
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+    display: block;
+    box-shadow: 0 2px 5px var(--shadow-color);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+#themeBtn:hover {
+    background: var(--button-hover);
+}
+
+#themeBtn:disabled {
+    background: var(--disabled-btn);
     cursor: not-allowed;
 }
 @keyframes spin {

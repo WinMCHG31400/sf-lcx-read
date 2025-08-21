@@ -12,7 +12,7 @@
 
 　　一面二十多米高的巨型屏幕上出现了如下显示，显示的内容只有戴着同步眼镜的最高执政官才能看到。
 
-<div style="background: #eaeaea;">　　中华人民共和国信息体ZZG931密级：AAA
+<div style="background: var(--border-color);">　　中华人民共和国信息体ZZG931密级：AAA
 
 　　软件BRAIN1，BRAIN2，BRAIN3，BRAIN4，BRAIN5，BRAIN6
 
@@ -40,7 +40,7 @@
 
 　　（如阅读完按任一键以继续……）</div>
 
-<div style="background: #eaeaea;">　　中华人民共和国信息体ZZG932密级：AAA
+<div style="background: var(--border-color);">　　中华人民共和国信息体ZZG932密级：AAA
 
 　　对BRAIN1，BRAIN2，BRAIN3，BRAIN4，BRAIN5，BRAIN6软件的鉴定方式和鉴定程序。
 
@@ -54,7 +54,7 @@
 
 　　（阅读完后打任一键以继续……）</div>
 
-<div style="background: #eaeaea;">　　中华人民共和国信息体ZZG933密级：AAA
+<div style="background: var(--border-color);">　　中华人民共和国信息体ZZG933密级：AAA
 
 　　软件BRAIN1，BRAIN2，BRAIN3，BRAIN4，BRAIN5，BRAIN6鉴定提纲
 
@@ -78,7 +78,7 @@
 
 　　（阅读完后打任一键以继续……）</div>
 
-<div style="background: #eaeaea;">　　中华人民共和国信息体ZZG934密级AA
+<div style="background: var(--border-color);">　　中华人民共和国信息体ZZG934密级AA
 
 　　中华人民共和国执政委员会最高执政官令：对软件BRAIN1，BRAIN2，BRAIN3，BRAIN4，BRAIN5，BRAIN6的鉴定结果定为AAA机密。</div>
 
