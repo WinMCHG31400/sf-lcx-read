@@ -121,36 +121,6 @@ async function loadFile(index) {
         downloadBtn.disabled = true;
     }
 }
-function setupShareButton() {
-    shareBtn.addEventListener('click', async () => {
-        if (currentIndex === -1) return;
-        
-        const filename = fileList[currentIndex].replace('.txt', '');
-        const shareUrl = `${window.location.origin}${window.location.pathname}?p=${filename}`;
-        const title = `分享: ${filename}`;
-        
-        // 检测是否为移动设备
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
-        if (isMobile && navigator.share) {
-            // 移动设备调用系统分享
-            try {
-                await navigator.share({
-                    title: title,
-                    text: fileList[currentIndex],
-                    url: shareUrl
-                });
-            } catch (err) {
-                console.log('分享取消:', err);
-                // 分享失败时转为复制链接
-                copyToClipboard(shareUrl);
-            }
-        } else {
-            // 桌面设备复制链接
-            copyToClipboard(shareUrl);
-        }
-    });
-}
 
 // 复制到剪贴板函数
 function copyToClipboard(text) {
@@ -281,6 +251,37 @@ window.addEventListener('scroll', () => {
         ticking = true;
     }
 });
+
+function setupShareButton() {
+    shareBtn.addEventListener('click', async () => {
+        if (currentIndex === -1) return;
+        
+        const filename = fileList[currentIndex].replace('.txt', '');
+        const shareUrl = `${window.location.origin}${window.location.pathname}?p=${filename}`;
+        const title = `分享: ${filename}`;
+        
+        // 检测是否为移动设备
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        if (isMobile && navigator.share) {
+            // 移动设备调用系统分享
+            try {
+                await navigator.share({
+                    title: title,
+                    text: fileList[currentIndex],
+                    url: shareUrl
+                });
+            } catch (err) {
+                console.log('分享取消:', err);
+                // 分享失败时转为复制链接
+                copyToClipboard(shareUrl);
+            }
+        } else {
+            // 桌面设备复制链接
+            copyToClipboard(shareUrl);
+        }
+    });
+}
 
 // 显示/隐藏按钮函数
 function toggleScrollTopButton() {
