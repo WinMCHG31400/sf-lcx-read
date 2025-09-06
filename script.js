@@ -105,7 +105,7 @@ async function loadFile(index) {
         prevBtn.disabled = currentIndex <= 0;
         nextBtn.disabled = currentIndex >= fileList.length - 1;
         downloadBtn.disabled = false;
-        shareBtn.display = false; 
+        shareBtn.display = false;
 
         // 更新文件信息
         filePosition.textContent = ` | 位置：${currentIndex + 1}/${fileList.length}`;
@@ -191,8 +191,14 @@ async function initFileSelector() {
             fileSelector.value = requestedFile;
             loadFile(index)
         }
-        else
-            window.location.href = window.location.pathname;
+        else {
+            window.history.replaceState({}, '', `${window.location.pathname}?p=${fileList[0]}`);
+            loadFile(0);
+        }
+    }
+    else {
+        window.history.replaceState({}, '', `${window.location.pathname}?p=${fileList[0]}`);
+        loadFile(0);
     }
 
     // 监听选择变化
@@ -210,14 +216,17 @@ async function initFileSelector() {
         }
         const index = fileList.indexOf(e.target.value);
         if (index !== -1) {
-            window.location.href = window.location.pathname + "?p=" + e.target.value;
-            //loadFile(index);
+            window.history.replaceState({}, '', `${window.location.pathname}?p=${e.target.value}`);
+            loadFile(index);
         }
     });
 
     // 上一个按钮事件
     prevBtn.addEventListener('click', () => {
-        if (currentIndex > 0) window.location.href = window.location.pathname + "?p=" + fileList[currentIndex - 1];
+        if (currentIndex > 0) {
+            window.history.replaceState({}, '', `${window.location.pathname}?p=${fileList[currentIndex - 1]}`);
+            loadFile(currentIndex - 1);
+        }
     });
 
     // 下载按钮事件
@@ -225,7 +234,10 @@ async function initFileSelector() {
 
     // 下一个按钮事件
     nextBtn.addEventListener('click', () => {
-        if (currentIndex < fileList.length - 1) window.location.href = window.location.pathname + "?p=" + fileList[currentIndex + 1];
+        if (currentIndex < fileList.length - 1) {
+            window.history.replaceState({}, '', `${window.location.pathname}?p=${fileList[currentIndex + 1]}`);
+            loadFile(currentIndex + 1);
+        }
     });
 
     // 键盘快捷键
@@ -233,11 +245,11 @@ async function initFileSelector() {
         if (currentIndex === -1) return;
 
         if (e.key === 'ArrowLeft' && !prevBtn.disabled) {
-            window.location.href = window.location.pathname + "?p=" + fileList[currentIndex - 1];
-            //loadFile(currentIndex - 1);
+            window.history.replaceState({}, '', `${window.location.pathname}?p=${fileList[currentIndex - 1]}`);
+            loadFile(currentIndex - 1);
         } else if (e.key === 'ArrowRight' && !nextBtn.disabled) {
-            window.location.href = window.location.pathname + "?p=" + fileList[currentIndex + 1];
-           // loadFile(currentIndex + 1);
+            window.history.replaceState({}, '', `${window.location.pathname}?p=${fileList[currentIndex + 1]}`);
+            loadFile(currentIndex + 1);
         }
     });
 }
@@ -255,14 +267,14 @@ window.addEventListener('scroll', () => {
 function setupShareButton() {
     shareBtn.addEventListener('click', async () => {
         if (currentIndex === -1) return;
-        
+
         const filename = fileList[currentIndex].replace('.txt', '');
         const shareUrl = `${window.location.origin}${window.location.pathname}?p=${filename}`;
         const title = `分享: ${filename}`;
-        
+
         // 检测是否为移动设备
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
+
         if (isMobile && navigator.share) {
             // 移动设备调用系统分享
             try {
