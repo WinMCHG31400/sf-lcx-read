@@ -50,7 +50,7 @@ body {
     font-family: Arial, "Microsoft YaHei", sans-serif;
     max-width: 900px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px;
     line-height: 1.6;
     color: var(--text-color);
     display: flex;
@@ -226,7 +226,7 @@ button:disabled {
     padding: 0px;
     text-align: center;
     position: fixed;
-    bottom: 60px;
+    bottom: 30px;
     right: 10px;
     width: 40px;
     height: 40px;
@@ -239,7 +239,9 @@ button:disabled {
     display: none;
     transition: background-color 0.3s, box-shadow 0.3s;
 }
-
+#scrollBtn:hover {
+    background: var(--button-hover);
+}
 #shareBtn {
     padding: 0px;
     text-align: center;
@@ -269,7 +271,7 @@ button:disabled {
     padding: 0px;
     text-align: center;
     position: fixed;
-    bottom: 110px;
+    bottom: 80px;
     right: 10px;
     width: 40px;
     height: 40px;
@@ -291,4 +293,42 @@ button:disabled {
 }
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+.font-controls {
+    position: fixed;
+    bottom: 140px;
+    right: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 1000;
+    background: var(--container-bg);
+    border-radius: 8px;
+    padding: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+}
+
+.font-controls button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 2px;
+    background: var(--button-bg);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.font-controls button:hover {
+    background: var(--button-hover);
+}
+
+#fileContent {
+    font-size: 16px;
+    line-height: 1.6;
+    transition: font-size 0.3s ease;
+    min-height: 200px;
 }
