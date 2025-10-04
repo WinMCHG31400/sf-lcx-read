@@ -261,6 +261,58 @@ window.addEventListener('scroll', () => {
     }
 });
 
+// 字体大小控制功能
+function setupFontControls() {
+    const fontSmallerBtn = document.getElementById('fontSmallerBtn');
+    const fontResetBtn = document.getElementById('fontResetBtn');
+    const fontLargerBtn = document.getElementById('fontLargerBtn');
+    const fileContent = document.getElementById('fileContent');
+    
+    const MIN_FONT_SIZE = 12;
+    const MAX_FONT_SIZE = 24;
+    const DEFAULT_FONT_SIZE = 16;
+    
+    // 从本地存储获取保存的字体大小
+    let currentFontSize = parseInt(localStorage.getItem('fileViewerFontSize')) || DEFAULT_FONT_SIZE;
+    
+    // 应用字体大小
+    function applyFontSize() {
+        fileContent.style.fontSize = currentFontSize + 'px';
+        localStorage.setItem('fileViewerFontSize', currentFontSize);
+        updateButtonStates();
+    }
+    
+    // 更新按钮状态
+    function updateButtonStates() {
+        fontSmallerBtn.disabled = currentFontSize <= MIN_FONT_SIZE;
+        fontLargerBtn.disabled = currentFontSize >= MAX_FONT_SIZE;
+    }
+    
+    // 缩小字体
+    fontSmallerBtn.addEventListener('click', () => {
+        if (currentFontSize > MIN_FONT_SIZE) {
+            currentFontSize -= 1;
+            applyFontSize();
+        }
+    });
+    
+    // 重置字体
+    fontResetBtn.addEventListener('click', () => {
+        currentFontSize = DEFAULT_FONT_SIZE;
+        applyFontSize();
+    });
+    
+    // 放大字体
+    fontLargerBtn.addEventListener('click', () => {
+        if (currentFontSize < MAX_FONT_SIZE) {
+            currentFontSize += 1;
+            applyFontSize();
+        }
+    });
+    
+    // 初始化
+    applyFontSize();
+}
 function setupShareButton() {
     shareBtn.addEventListener('click', async () => {
         if (currentIndex === -1) return;
@@ -304,6 +356,7 @@ function toggleScrollTopButton() {
 window.addEventListener('DOMContentLoaded', () => {
     initFileSelector();
     setupShareButton();
+    setupFontControls(); 
     scrollTopBtn.addEventListener('click', () => {
         window.scrollTo({
             top: 0,

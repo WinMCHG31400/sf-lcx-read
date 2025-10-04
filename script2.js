@@ -440,19 +440,6 @@ function setupFontControls() {
     applyFontSize();
 }
 
-// 在页面加载时初始化字体控制
-window.addEventListener('DOMContentLoaded', () => {
-    initFileSelector();
-    setupShareButton();
-    setupFontControls(); // 添加这行
-    
-    scrollTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-});
 // 初始化按钮事件
 function initButtons() {
     // 下载按钮事件
@@ -544,6 +531,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initChapterSelector();
     initButtons();
     setupShareButton();
+    setupFontControls(); 
 
     // 滚动显示/隐藏返回顶部按钮
     let ticking = false;
