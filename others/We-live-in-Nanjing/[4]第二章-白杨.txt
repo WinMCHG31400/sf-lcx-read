@@ -1,4 +1,5 @@
 第二章 白杨
+
 　　秦淮区苜蓿园大街66号，梅花山庄中沁苑。
 　　这里到紫金山步行一小时，到月牙湖步行十分钟，有山有水有城墙，是块风水宝地，小区房价三万多一平。
 　　白杨骑着自行车飞快地碾过苜蓿园大街的路面，从一盏路灯底下蹿进另一盏路灯底下，然后左拐进入小区门禁，冲过减速带时震得车轮悬空，然后重重地顿下来，在保安惊讶的目光中一溜烟骑进夜色里不见了。
@@ -54,7 +55,7 @@
 　　白杨戴着耳机守听了半分钟，频道中无人说话，于是他按下手咪上的TRANSMIT键，电台面板上的绿灯亮起。
 　　这是发送状态。
 　　白杨深吸了一口气，作为一个还未考B证没有资质的非法小HAM，他喊出了自己火腿生涯中的第一句呼叫：
-　　“CQ！CQ！CQ！This is BG4MXH， Bravo-Golf-Four-Mike-Xray-Hotel，calling cq and waiting for a call！”
+　　“CQ！CQ！CQ！This is BG4MXH，Bravo Golf Four Mike Xray Hotel，calling cq and waiting for a call！”
 　　他的声音会在电台内被调制成有规律的无线电波，接着被天线内部的振子发射向空中，在灯火通明车水马龙的南京市秦淮区，像是有人投入一颗小小的石子，荡起肉眼看不见的微微涟漪，以光速向四面八方扩散，在五十公里高的电离层被反射向地平线之外，跨越大江大河与郁郁葱葱的原始森林，被每一个守在这个频道上的人听到。
 　　“CQ”是所有无线电通信中的通用短语，意思是SEEK YOU。
 　　类似于打电话时所说的“有人吗？有人吗？有人吗？”
@@ -65,7 +66,7 @@
 　　就好比没上户口的黑户。
 　　白杨的电台是老爹留给自己的，老爹是个腌制了二十年的老火腿，曾经在北海舰队观通站服役，专业的通信技术兵，转业后在市里开嘀嘀，当年老爹在南京市火腿圈子里叱咤风云，正儿八经的技术大佬，最后还是退出了江湖。
 　　用老爹的话来说，这年头哪里还有人玩这个，聊天用微信不香么？
-　　“CQ！CQ！CQ！This is BG4MXH， Bravo-Golf-Four-Mike-Xray-Hotel，calling cq and waiting for a call！”
+　　“CQ！CQ！CQ！This is BG4MXH，Bravo Golf Four Mike Xray Hotel，calling cq and waiting for a call！”
 　　白杨再次呼叫，然后略微紧张地等待回应。
 　　他希望几秒钟后会有另一个人的声音在频道中响起，那可能是个J开头或者R开头的呼号，来自日本或者俄罗斯。
 　　但频道里仍然无人应答，只有无边无际的白噪音。
@@ -103,7 +104,7 @@
 　　14.255MHZ。
 　　折腾了一晚上，白杨终于碰到了第二个人。
 　　还是个姑娘。
-　　白杨等对方的声音停下来，开始呼叫：““CQ！CQ！CQ！This is BG4MXH， Bravo-Golf-Four-Mike-Xray-Hotel！calling cq and waiting for a call！”
+　　白杨等对方的声音停下来，开始呼叫：“CQ！CQ！CQ！This is BG4MXH，Bravo Golf Four Mike Xray Hotel！calling cq and waiting for a call！”
 　　频道里静默了几秒钟。
 　　然后耳机中爆发出诧异的惊叫：
 　　“活人？”

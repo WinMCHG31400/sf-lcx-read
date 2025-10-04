@@ -394,8 +394,8 @@ function setupFontControls() {
     const fontLargerBtn = document.getElementById('fontLargerBtn');
     const fileContent = document.getElementById('fileContent');
     
-    const MIN_FONT_SIZE = 12;
-    const MAX_FONT_SIZE = 24;
+    const MIN_FONT_SIZE = 6;
+    const MAX_FONT_SIZE = 40;
     const DEFAULT_FONT_SIZE = 16;
     
     // 从本地存储获取保存的字体大小
