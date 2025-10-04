@@ -181,23 +181,20 @@ async function initFileSelector() {
     fileSelector.disabled = false;
 
     // 获取URL参数
-    const requestedFile = getFilenameFromUrl();
-    if (requestedFile) {
-        // 检查文件是否存在列表中
-        const index = fileList.indexOf(requestedFile);
-
-        if (index !== -1) {
+    const requestedFileIndex = getFilenameFromUrl();
+    if (requestedFileIndex) {
+        if (requestedFileIndex<=fileList.length && requestedFileIndex>0) {
             // 自动加载请求的文件
-            fileSelector.value = requestedFile;
-            loadFile(index)
+            fileSelector.value = fileList[requestedFileIndex];
+            loadFile(requestedFileIndex)
         }
         else {
-            window.history.replaceState({}, '', `${window.location.pathname}?p=${fileList[0]}`);
+            window.history.replaceState({}, '', `${window.location.pathname}?p=${0}`);
             loadFile(0);
         }
     }
     else {
-        window.history.replaceState({}, '', `${window.location.pathname}?p=${fileList[0]}`);
+        window.history.replaceState({}, '', `${window.location.pathname}?p=${0}`);
         loadFile(0);
     }
 
@@ -216,7 +213,7 @@ async function initFileSelector() {
         }
         const index = fileList.indexOf(e.target.value);
         if (index !== -1) {
-            window.history.replaceState({}, '', `${window.location.pathname}?p=${e.target.value}`);
+            window.history.replaceState({}, '', `${window.location.pathname}?p=${index}`);
             loadFile(index);
         }
     });
@@ -224,7 +221,7 @@ async function initFileSelector() {
     // 上一个按钮事件
     prevBtn.addEventListener('click', () => {
         if (currentIndex > 0) {
-            window.history.replaceState({}, '', `${window.location.pathname}?p=${fileList[currentIndex - 1]}`);
+            window.history.replaceState({}, '', `${window.location.pathname}?p=${currentIndex - 1}`);
             loadFile(currentIndex - 1);
         }
     });
@@ -235,7 +232,7 @@ async function initFileSelector() {
     // 下一个按钮事件
     nextBtn.addEventListener('click', () => {
         if (currentIndex < fileList.length - 1) {
-            window.history.replaceState({}, '', `${window.location.pathname}?p=${fileList[currentIndex + 1]}`);
+            window.history.replaceState({}, '', `${window.location.pathname}?p=${currentIndex + 1}`);
             loadFile(currentIndex + 1);
         }
     });
@@ -245,10 +242,10 @@ async function initFileSelector() {
         if (currentIndex === -1) return;
 
         if (e.key === 'ArrowLeft' && !prevBtn.disabled) {
-            window.history.replaceState({}, '', `${window.location.pathname}?p=${fileList[currentIndex - 1]}`);
+            window.history.replaceState({}, '', `${window.location.pathname}?p=${currentIndex - 1}`);
             loadFile(currentIndex - 1);
         } else if (e.key === 'ArrowRight' && !nextBtn.disabled) {
-            window.history.replaceState({}, '', `${window.location.pathname}?p=${fileList[currentIndex + 1]}`);
+            window.history.replaceState({}, '', `${window.location.pathname}?p=${currentIndex + 1}`);
             loadFile(currentIndex + 1);
         }
     });

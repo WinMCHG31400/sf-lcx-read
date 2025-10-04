@@ -52,7 +52,7 @@ async function fetchChapters() {
 // 获取指定章节的文章列表
 async function fetchFilesForChapter(chapter) {
     try {
-        const manifestFile = `${chapter}.json`;
+        const manifestFile = chapters[chapter] + ".json";
         const url = CONFIG.CACHE_BUSTING
             ? `${manifestFile}?t=${Date.now()}`
             : manifestFile;
@@ -78,7 +78,7 @@ async function fetchFilesForChapter(chapter) {
 }
 
 // 读取文件内容
-async function readFile(chapter, filename) {
+async function readFile(filename) {
     try {
         fileContent.innerHTML = `<span class="loading"></span>正在加载文件...`;
 
@@ -127,14 +127,14 @@ function downloadCurrentFile() {
 }
 
 // 加载并显示文件
-async function loadFile(chapter, index) {
+async function loadFile(index) {
     if (index < 0 || index >= fileList.length) return;
 
     currentIndex = index;
     const filename = fileList[currentIndex];
 
     try {
-        const content = await readFile(chapter, filename);
+        const content = await readFile(filename);
         currentFileContent = content; // 保存当前文件内容
         fileContent.innerHTML = content;
 
@@ -142,15 +142,7 @@ async function loadFile(chapter, index) {
         fileSelector.value = filename;
 
         // 更新按钮状态
-        if (currentIndex <= 0)
-            prevBtn.disabled = chapters.indexOf(currentChapter) <= 0;
-        else
-            prevBtn.disabled = false;
-        if (currentIndex >= fileList.length - 1)
-            nextBtn.disabled = chapters.indexOf(currentChapter) >= chapters.length - 1;
-        else
-            nextBtn.disabled = false;
-        downloadBtn.disabled = false;
+        updateButtonStates();
 
         // 更新文件信息
         filePosition.textContent = ` | 位置：${currentIndex + 1}/${fileList.length}`;
@@ -165,6 +157,20 @@ async function loadFile(chapter, index) {
         showError(error.message);
         downloadBtn.disabled = true;
     }
+}
+
+// 更新按钮状态
+function updateButtonStates() {
+    const currentChapterIndex = chapters.indexOf(currentChapter);
+    
+    // 上一篇按钮状态
+    prevBtn.disabled = (currentIndex <= 0 && currentChapterIndex <= 0);
+    
+    // 下一篇按钮状态
+    nextBtn.disabled = (currentIndex >= fileList.length - 1 && currentChapterIndex >= chapters.length - 1);
+    
+    // 下载按钮状态
+    downloadBtn.disabled = (currentIndex === -1 || !currentFileContent);
 }
 
 // 复制到剪贴板函数
@@ -184,7 +190,7 @@ function copyToClipboard(text) {
     });
 }
 
-//文件大小显示
+// 文件大小显示
 function formatFileSize(bytes) {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -205,22 +211,27 @@ function getFilenameFromUrl() {
     const params = new URLSearchParams(window.location.search);
     const chapterParam = params.get('chapter');
     const fileParam = params.get('file');
-    if(!chapterParam && !fileParam) return null;
-    if (!chapterParam) return null;
-    if (!fileParam) {
-        initFileSelector(chapterParam)
-        fileParam = fileList[0];
-    }
-
-    return { chapter: chapterParam, file: fileParam };
+    
+    if (!chapterParam) return { chapter: null, file: null };
+    
+    return { 
+        chapter: chapterParam, 
+        file: fileParam ? parseInt(fileParam) : 0 
+    };
 }
 
-async function initFileSelector(chapter) {
+async function initFileSelector(chapterIndex) {
+    if (chapterIndex < 0 || chapterIndex >= chapters.length) {
+        console.error('无效的章节索引:', chapterIndex);
+        return;
+    }
 
-    const zChapterFiles = await fetchFilesForChapter(chapter);
-    chapterSelector.value = chapter;
-    currentChapter = chapter;
+    const zChapterFiles = await fetchFilesForChapter(chapterIndex);
+    currentChapter = chapters[chapterIndex];
     fileList = zChapterFiles;
+
+    // 更新章节选择器
+    chapterSelector.value = currentChapter;
 
     // 更新文章选择器
     fileSelector.innerHTML = '<option value="">-- 请选择文章 --</option>';
@@ -231,12 +242,6 @@ async function initFileSelector(chapter) {
         fileSelector.appendChild(option);
     });
     fileSelector.disabled = false;
-    // 加载章节的第一篇文章
-    const zFileIndex = 0
-    const zFile = fileList[zFileIndex];
-    fileSelector.value = zFile;
-    loadFile(chapter, zFileIndex);
-    window.history.replaceState({}, '', `${window.location.pathname}?chapter=${chapter}&file=${zFile}`);
 }
 
 // 初始化章节选择器
@@ -263,105 +268,93 @@ async function initChapterSelector() {
     // 监听章节选择变化
     chapterSelector.addEventListener('change', async (e) => {
         if (!e.target.value) {
-            fileSelector.innerHTML = '<option value="">-- 请先选择章节 --</option>';
-            fileSelector.disabled = true;
-            fileContent.textContent = '请选择章节和文章';
-            fileInfo.textContent = '';
-            filePosition.textContent = '';
-            currentIndex = -1;
-            prevBtn.disabled = true;
-            nextBtn.disabled = true;
-            downloadBtn.disabled = true;
-            shareBtn.style.display = 'none';
-            window.history.replaceState({}, '', window.location.pathname);
+            resetFileSelector();
             return;
         }
-        fileContent.textContent = '请选择文章';
-        currentChapter = e.target.value;
-        await initFileSelector(currentChapter);
-
-        // 获取URL参数
-        const requestedFile = getFilenameFromUrl();
-        if (requestedFile && requestedFile.chapter === currentChapter) {
-            // 检查文件是否存在列表中
-            const index = fileList.indexOf(requestedFile.file);
-            if (index !== -1)
-                // 自动加载请求的文件
-                fileSelector.value = requestedFile.file;
-            else {
+        
+        fileContent.textContent = '正在加载文章列表...';
+        const chapterIndex = chapters.indexOf(e.target.value);
+        if (chapterIndex !== -1) {
+            await initFileSelector(chapterIndex);
+            
+            // 加载该章节的第一篇文章
+            if (fileList.length > 0) {
                 fileSelector.value = fileList[0];
-                index = 0;
+                await loadFile(0);
+                window.history.replaceState({}, '', `${window.location.pathname}?chapter=${chapters.indexOf(currentChapter)}&file=0`);
             }
-            loadFile(currentChapter, index);
-            window.history.replaceState({}, '', `${window.location.pathname}?chapter=${currentChapter}&file=${requestedFile.file}`);
         }
     });
 
     // 监听文章选择变化
-    fileSelector.addEventListener('change', (e) => {
+    fileSelector.addEventListener('change', async (e) => {
         if (!e.target.value) {
-            fileContent.textContent = '请选择文章';
-            fileInfo.textContent = '';
-            filePosition.textContent = '';
-            currentIndex = -1;
-            prevBtn.disabled = true;
-            nextBtn.disabled = true;
-            downloadBtn.disabled = true;
-            shareBtn.style.display = 'none';
-            window.history.replaceState({}, '', `${window.location.pathname}?chapter=${currentChapter}`);
+            resetFileSelector();
+            window.history.replaceState({}, '', `${window.location.pathname}?chapter=${chapters.indexOf(currentChapter)}`);
             return;
         }
+        
         const index = fileList.indexOf(e.target.value);
         if (index !== -1) {
-            loadFile(currentChapter, index);
-            window.history.replaceState({}, '', `${window.location.pathname}?chapter=${currentChapter}&file=${e.target.value}`);
-        }
-        else {
-            loadFile(currentChapter, 0);
-            window.history.replaceState({}, '', `${window.location.pathname}?chapter=${currentChapter}&file=${fileList[0]}`);
+            await loadFile(index);
+            window.history.replaceState({}, '', `${window.location.pathname}?chapter=${chapters.indexOf(currentChapter)}&file=${index}`);
         }
     });
-    // 获取URL参数
+
+    // 获取URL参数并初始化
     const requestedFile = getFilenameFromUrl();
-    if (requestedFile) {
+    
+    if (requestedFile.chapter !== null) {
         // 检查章节是否存在
-        const chapterIndex = chapters.indexOf(requestedFile.chapter);
+        const chapterIndex = requestedFile.chapter;
         if (chapterIndex !== -1) {
-            // 自动选择章节
-            chapterSelector.value = requestedFile.chapter;
-            // 触发change事件加载文章列表
-            chapterSelector.dispatchEvent(new Event('change'));
+            await initFileSelector(chapterIndex);
+            
+            // 加载指定文章或第一篇文章
+            const fileIndex = (requestedFile.file !== null && requestedFile.file < fileList.length) 
+                ? requestedFile.file 
+                : 0;
+                
+            if (fileList.length > 0) {
+                fileSelector.value = fileList[fileIndex];
+                await loadFile(fileIndex);
+                window.history.replaceState({}, '', `${window.location.pathname}?chapter=${chapters.indexOf(currentChapter)}&file=${fileIndex}`);
+            }
+        } else {
+            // 章节不存在，加载第一个章节
+            await loadFirstChapter();
         }
-        else {
-            const zChapter = chapters[0];
-            const zChapterFiles = await fetchFilesForChapter(zChapter);
-            // 切换到第一章节
-            chapterSelector.value = zChapter;
-            currentChapter = zChapter;
-            fileList = zChapterFiles;
-
-            // 更新文章选择器
-            fileSelector.innerHTML = '<option value="">-- 请选择文章 --</option>';
-            fileList.forEach(file => {
-                const option = document.createElement('option');
-                option.value = file;
-                option.textContent = file;
-                fileSelector.appendChild(option);
-            });
-
-            // 加载第一章节的第一篇文章
-            const zFileIndex = 0
-            const zFile = fileList[zFileIndex];
-            fileSelector.value = zFile;
-            loadFile(zChapter, zFileIndex);
-            window.history.replaceState({}, '', `${window.location.pathname}?chapter=${zChapter}&file=${zFile}`);
-        }
+    } else {
+        // 没有URL参数，加载第一个章节
+        await loadFirstChapter();
     }
-    else {
+}
+
+// 加载第一个章节
+async function loadFirstChapter() {
+    if (chapters.length > 0) {
         await initFileSelector(0);
-        chapterSelector.value = chapters[0];
-        chapterSelector.dispatchEvent(new Event('change'));
+        if (fileList.length > 0) {
+            fileSelector.value = fileList[0];
+            await loadFile(0);
+            window.history.replaceState({}, '', `${window.location.pathname}?chapter=${chapters.indexOf(currentChapter)}&file=0`);
+        }
     }
+}
+
+// 重置文件选择器状态
+function resetFileSelector() {
+    fileSelector.innerHTML = '<option value="">-- 请先选择章节 --</option>';
+    fileSelector.disabled = true;
+    fileContent.textContent = '请选择章节和文章';
+    fileInfo.textContent = '';
+    filePosition.textContent = '';
+    currentIndex = -1;
+    currentFileContent = '';
+    prevBtn.disabled = true;
+    nextBtn.disabled = true;
+    downloadBtn.disabled = true;
+    shareBtn.style.display = 'none';
 }
 
 // 设置分享按钮
@@ -369,9 +362,8 @@ function setupShareButton() {
     shareBtn.addEventListener('click', async () => {
         if (currentIndex === -1) return;
 
-        const filename = fileList[currentIndex];
-        const shareUrl = `${window.location.origin}${window.location.pathname}?chapter=${currentChapter}&file=${filename}`;
-        const title = `分享: ${currentChapter} - ${filename}`;
+        const shareUrl = `${window.location.origin}${window.location.pathname}?chapter=${chapters.indexOf(currentChapter)}&file=${currentIndex}`;
+        const title = `分享: ${currentChapter} - ${fileList[currentIndex]}`;
 
         // 检测是否为移动设备
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -405,81 +397,49 @@ function initButtons() {
     prevBtn.addEventListener('click', async () => {
         if (currentIndex > 0) {
             // 同一章节内的上一篇
-            const prevFile = fileList[currentIndex - 1];
-            fileSelector.value = prevFile;
-            loadFile(currentChapter, currentIndex - 1);
-            window.history.replaceState({}, '', `${window.location.pathname}?chapter=${currentChapter}&file=${prevFile}`);
+            await loadFile(currentIndex - 1);
+            window.history.replaceState({}, '', `${window.location.pathname}?chapter=${chapters.indexOf(currentChapter)}&file=${currentIndex}`);
         } else if (currentIndex === 0) {
             // 当前章节的第一篇，需要切换到上一章节的最后一篇
             const currentChapterIndex = chapters.indexOf(currentChapter);
             if (currentChapterIndex > 0) {
-                const prevChapter = chapters[currentChapterIndex - 1];
-                const prevChapterFiles = await fetchFilesForChapter(prevChapter);
+                const prevChapterIndex = currentChapterIndex - 1;
+                await initFileSelector(prevChapterIndex);
 
-                if (prevChapterFiles.length > 0) {
-                    // 切换到上一章节
-                    chapterSelector.value = prevChapter;
-                    currentChapter = prevChapter;
-                    fileList = prevChapterFiles;
-
-                    // 更新文章选择器
-                    fileSelector.innerHTML = '<option value="">-- 请选择文章 --</option>';
-                    fileList.forEach(file => {
-                        const option = document.createElement('option');
-                        option.value = file;
-                        option.textContent = file;
-                        fileSelector.appendChild(option);
-                    });
-
+                if (fileList.length > 0) {
                     // 加载上一章节的最后一篇文章
                     const lastFileIndex = fileList.length - 1;
-                    const lastFile = fileList[lastFileIndex];
-                    fileSelector.value = lastFile;
-                    loadFile(prevChapter, lastFileIndex);
-                    window.history.replaceState({}, '', `${window.location.pathname}?chapter=${prevChapter}&file=${lastFile}`);
+                    fileSelector.value = fileList[lastFileIndex];
+                    await loadFile(lastFileIndex);
+                    window.history.replaceState({}, '', `${window.location.pathname}?chapter=${chapters.indexOf(currentChapter)}&file=${lastFileIndex}`);
                 }
             }
         }
+        updateButtonStates();
     });
 
     // 下一篇按钮事件
     nextBtn.addEventListener('click', async () => {
         if (currentIndex < fileList.length - 1) {
             // 同一章节内的下一篇
-            const nextFile = fileList[currentIndex + 1];
-            fileSelector.value = nextFile;
-            loadFile(currentChapter, currentIndex + 1);
-            window.history.replaceState({}, '', `${window.location.pathname}?chapter=${currentChapter}&file=${nextFile}`);
+            await loadFile(currentIndex + 1);
+            window.history.replaceState({}, '', `${window.location.pathname}?chapter=${chapters.indexOf(currentChapter)}&file=${currentIndex}`);
         } else if (currentIndex === fileList.length - 1) {
             // 当前章节的最后一篇，需要切换到下一章节的第一篇
             const currentChapterIndex = chapters.indexOf(currentChapter);
             if (currentChapterIndex < chapters.length - 1) {
-                const nextChapter = chapters[currentChapterIndex + 1];
-                const nextChapterFiles = await fetchFilesForChapter(nextChapter);
+                const nextChapterIndex = currentChapterIndex + 1;
+                await initFileSelector(nextChapterIndex);
 
-                if (nextChapterFiles.length > 0) {
-                    // 切换到下一章节
-                    chapterSelector.value = nextChapter;
-                    currentChapter = nextChapter;
-                    fileList = nextChapterFiles;
-
-                    // 更新文章选择器
-                    fileSelector.innerHTML = '<option value="">-- 请选择文章 --</option>';
-                    fileList.forEach(file => {
-                        const option = document.createElement('option');
-                        option.value = file;
-                        option.textContent = file;
-                        fileSelector.appendChild(option);
-                    });
-
+                if (fileList.length > 0) {
                     // 加载下一章节的第一篇文章
-                    const firstFile = fileList[0];
-                    fileSelector.value = firstFile;
-                    loadFile(nextChapter, 0);
-                    window.history.replaceState({}, '', `${window.location.pathname}?chapter=${nextChapter}&file=${firstFile}`);
+                    fileSelector.value = fileList[0];
+                    await loadFile(0);
+                    window.history.replaceState({}, '', `${window.location.pathname}?chapter=${cchapters.indexOf(currentChapter)}&file=0`);
                 }
             }
         }
+        updateButtonStates();
     });
 
     // 键盘快捷键
@@ -487,7 +447,7 @@ function initButtons() {
         if (currentIndex === -1) return;
 
         if (e.key === 'ArrowLeft' && !prevBtn.disabled) {
-            // 模拟点击上一篇按钮
+            e.preventDefault();
             const clickEvent = new MouseEvent('click', {
                 bubbles: true,
                 cancelable: true,
@@ -495,7 +455,7 @@ function initButtons() {
             });
             prevBtn.dispatchEvent(clickEvent);
         } else if (e.key === 'ArrowRight' && !nextBtn.disabled) {
-            // 模拟点击下一篇按钮
+            e.preventDefault();
             const clickEvent = new MouseEvent('click', {
                 bubbles: true,
                 cancelable: true,
