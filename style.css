@@ -19,6 +19,7 @@
     --link-color: #2c3e50;
     --link-hover: #7b7979;
     --file-info: #7f8c8d;
+    --data-info: #363636;
     --error-color: #e74c3c;
 }
 
@@ -43,6 +44,7 @@
     --link-color: #cccccc;
     --link-hover: #ffffff;
     --file-info: #a0a0a0;
+    --data-info: #c7c7c7;
     --error-color: #ff6b6b;
 }
 
@@ -161,8 +163,15 @@ select {
     font-weight: bold;
 }
 
-.file-info {
+.data-info {
     margin-top: 15px;
+    font-size: 18px;
+    color: var(--data-info);
+    text-align: right;
+    transition: color 0.3s;
+}
+
+.file-info {
     font-size: 14px;
     color: var(--file-info);
     text-align: right;
