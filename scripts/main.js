@@ -114,7 +114,7 @@ async function loadFile(index) {
         shareBtn.disabled = false;
 
         filePosition.textContent = ` | 位置：${currentIndex + 1}/${datas.length}`;
-        timeInfo.textContent = `发表时间：${datas[currentIndex].time}`;
+        timeInfo.textContent = datas[currentIndex].time?`发表时间：${datas[currentIndex].time}`:"";
         nameInfo.textContent = datas[currentIndex].alias?`| 别名：${datas[currentIndex].alias}`:''
 
         const contentStart = document.getElementById('fileContent').offsetTop;
