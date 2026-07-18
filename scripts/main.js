@@ -1,6 +1,7 @@
 const CONFIG = {
     MANIFEST_FILE: 'datas.json',
-    CACHE_BUSTING: true
+    CACHE_BUSTING: true,
+    TXT_ENDING:false
 };
 
 let datas = [];
@@ -50,7 +51,7 @@ async function fetchData() {
 async function readFile(filename) {
     try {
         fileContent.innerHTML = `<span class="loading"></span>正在加载文件...`;
-        filename = filename + ".txt";
+        filename = filename + (CONFIG.TXT_ENDING ? ".txt" : "");
         const url = CONFIG.CACHE_BUSTING
             ? `${filename}?t=${Date.now()}`
             : filename;
